@@ -3,8 +3,12 @@ export default function Beneficiary() {
     <div className="p-6 space-y-10 max-w-4xl mx-auto">
       {/* Brief Description */}
       <section className="text-center">
-        <h1 className="text-3xl font-bold text-indigo-600">Beneficiary Portal</h1>
-        <p className="text-gray-700 mt-2">Welcome to the beneficiary section of our platform.</p>
+        <h1 className="text-3xl font-bold text-beneficiary">
+          Beneficiary Portal
+        </h1>
+        <p className="text-textbase-light dark:text-textbase-dark mt-2">
+          Welcome to the beneficiary section of our platform.
+        </p>
       </section>
 
       {/* Maybe Images */}
@@ -18,16 +22,19 @@ export default function Beneficiary() {
 
       {/* Motivation */}
       <section>
-        <h2 className="text-2xl font-semibold text-blue-600">Our Motivation</h2>
-        <p className="text-gray-600">
-          We are driven to connect individuals in need with compassionate volunteers ready to help.
+        <h2 className="text-2xl font-semibold text-beneficiary">
+          Our Motivation
+        </h2>
+        <p className="text-textbase-light/80 dark:text-textbase-dark/80">
+          We are driven to connect individuals in need with compassionate
+          volunteers ready to help.
         </p>
       </section>
 
       {/* Goals */}
       <section>
-        <h2 className="text-2xl font-semibold text-blue-600">Goals</h2>
-        <ul className="list-disc pl-6 text-gray-600">
+        <h2 className="text-2xl font-semibold text-beneficiary">Goals</h2>
+        <ul className="list-disc pl-6 text-textbase-light/80 dark:text-textbase-dark/80">
           <li>Ensure access to resources for every registered beneficiary</li>
           <li>Facilitate meaningful, impactful connections</li>
           <li>Support community-led initiatives</li>
@@ -36,18 +43,30 @@ export default function Beneficiary() {
 
       {/* Testimonials */}
       <section>
-        <h2 className="text-2xl font-semibold text-blue-600">Testimonials</h2>
-        <blockquote className="italic text-gray-500 border-l-4 border-blue-300 pl-4">
-          “This platform changed my life. I got the support I needed just in time.”
+        <h2 className="text-2xl font-semibold text-beneficiary">
+          Testimonials
+        </h2>
+        <blockquote className="italic text-textbase-light/70 dark:text-textbase-dark/70 border-l-4 border-beneficiary-light pl-4">
+          “This platform changed my life. I got the support I needed just in
+          time.”
         </blockquote>
       </section>
 
       {/* Contact */}
       <section>
-        <h2 className="text-2xl font-semibold text-blue-600">Contact</h2>
-        <p className="text-gray-600">Email us at: <a href="mailto:support@example.com" className="text-indigo-600 underline">support@example.com</a></p>
+        <h2 className="text-2xl font-semibold text-beneficiary">Contact</h2>
+        <p className="text-textbase-light/80 dark:text-textbase-dark/80">
+          Email us at:{" "}
+          <a
+            href="mailto:support@example.com"
+            className="text-beneficiary underline"
+          >
+            support@example.com
+          </a>
+        </p>
       </section>
     </div>
   );
 }
+
 
