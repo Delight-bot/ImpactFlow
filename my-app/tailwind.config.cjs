@@ -14,7 +14,7 @@ module.exports = {
           dark: "#1E40AF",    // blue-900
         },
         volunteer: {
-          light: "#dd9015",   // orange-ish light
+          light: "#15dd4aff",   // orange-ish light
           DEFAULT: "#16A34A", // green-600
           dark: "#14532D",    // green-900
         },
@@ -24,7 +24,7 @@ module.exports = {
           dark: "#4C1D95",    // purple-900
         },
         sitebg: {
-          light: "#F9FAFB",   // gray-50
+          light: "#7ccbe617",   // gray-50
           dark: "#111827",    // gray-900
         },
         textbase: {

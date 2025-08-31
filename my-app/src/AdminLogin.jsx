@@ -11,13 +11,11 @@ export default function AdminLogin() {
     console.log('Form submitted with:', credentials); // Debug log
 
     // Simple authentication
-    if (credentials.username === 'admin' && credentials.password === 'admin123') {
-      console.log('Login successful!');
-      localStorage.setItem('adminAuthenticated', 'true');
-      navigate('/admin');
+      if (credentials.username === 'admin' && credentials.password === 'admin123') {
+      localStorage.setItem("adminAuthenticated", "true");  // must be a string
+      navigate("/admin");
     } else {
-      console.log('Login failed');
-      setError('Invalid admin credentials. Use: admin / admin123');
+      setError("Invalid admin credentials. Use: admin / admin123");
     }
   };
 

@@ -31,26 +31,26 @@ export default function Layout() {
             Home
           </Link>
 
-          {/* Beneficiary */}
+          {/* Beneficiary Login */}
           <Link
             to="/login/beneficiary"
-            className="px-4 py-2 rounded-lg bg-beneficiary hover:bg-beneficiary-dark transition-all duration-300 font-medium shadow-md hover:shadow-beneficiary/50 hover:shadow-lg hover:scale-105"
+            className="px-4 py-2 rounded-lg border border-beneficiary text-beneficiary hover:bg-beneficiary-light transition-all duration-300 font-medium shadow-md hover:shadow-lg hover:shadow-beneficiary/50 hover:scale-105"
           >
             Beneficiary Login
           </Link>
 
-          {/* Volunteer */}
+          {/* Volunteer Login */}
           <Link
             to="/login/volunteer"
-            className="px-4 py-2 rounded-lg bg-volunteer hover:bg-volunteer-dark transition-all duration-300 font-medium shadow-md hover:shadow-volunteer/50 hover:shadow-lg hover:scale-105"
+            className="px-4 py-2 rounded-lg border border-volunteer text-volunteer hover:bg-volunteer-light transition-all duration-300 font-medium shadow-md hover:shadow-lg hover:shadow-volunteer/50 hover:scale-105"
           >
             Volunteer Login
           </Link>
 
-          {/* Admin */}
+          {/* Admin Login */}
           <Link
             to="/admin/login"
-            className="px-4 py-2 rounded-lg bg-admin hover:bg-admin-dark transition-all duration-300 font-medium text-sm shadow-md hover:shadow-admin/50 hover:shadow-lg hover:scale-105"
+            className="px-4 py-2 rounded-lg border border-admin text-admin hover:bg-admin-light transition-all duration-300 font-medium shadow-md hover:shadow-lg hover:shadow-admin/50 hover:scale-105 text-sm"
           >
             Admin Login
           </Link>
