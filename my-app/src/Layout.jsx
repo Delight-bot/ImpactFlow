@@ -1,7 +1,13 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { useState } from "react";
 import Footer from "./Footer";
+import LoginModal from "./LoginModal";
 
 export default function Layout() {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
   const toggleTheme = () => {
     const html = document.documentElement;
     if (html.classList.contains("dark")) {
@@ -10,6 +16,13 @@ export default function Layout() {
     } else {
       html.classList.add("dark");
       localStorage.theme = "dark";
+    }
+  };
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -46,29 +59,32 @@ export default function Layout() {
               Home
             </Link>
 
-            {/* Beneficiary Login */}
-            <Link
-              to="/login/beneficiary"
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-purple-500/50 hover:scale-105"
-            >
-              Beneficiary
-            </Link>
+            {/* Navigation links - only show on homepage */}
+            {isHomePage && (
+              <>
+                <button
+                  onClick={() => scrollToSection("how-it-works")}
+                  className="px-4 py-2 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-all duration-300 font-medium hover:scale-105 text-gray-700 dark:text-gray-200"
+                >
+                  How It Works
+                </button>
 
-            {/* Volunteer Login */}
-            <Link
-              to="/login/volunteer"
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-green-500/50 hover:scale-105"
-            >
-              Volunteer
-            </Link>
+                <button
+                  onClick={() => scrollToSection("get-started")}
+                  className="px-4 py-2 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-all duration-300 font-medium hover:scale-105 text-gray-700 dark:text-gray-200"
+                >
+                  Get Started
+                </button>
+              </>
+            )}
 
-            {/* Admin Login */}
-            <Link
-              to="/admin/login"
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700 transition-all duration-300 font-medium shadow-lg hover:shadow-orange-500/50 hover:scale-105 text-sm"
+            {/* Single Login Button */}
+            <button
+              onClick={() => setIsLoginModalOpen(true)}
+              className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700 transition-all duration-300 font-medium shadow-lg hover:shadow-purple-500/50 hover:scale-105"
             >
-              Admin
-            </Link>
+              Login
+            </button>
 
             {/* Dark/Light mode toggle */}
             <button
@@ -89,6 +105,9 @@ export default function Layout() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Login Modal */}
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </div>
   );
 }

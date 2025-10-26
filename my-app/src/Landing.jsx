@@ -64,7 +64,7 @@ export default function Landing() {
             <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
               Request assistance while maintaining your privacy. Connect with verified volunteers who can help with your specific needs.
             </p>
-            <RoleButtons role="beneficiary" signupPath="/signup/beneficiary" loginPath="/login/beneficiary" />
+            <RoleButtons role="beneficiary" signupPath="/signup/beneficiary" />
           </div>
         </div>
 
@@ -83,7 +83,7 @@ export default function Landing() {
             <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
               Make a real difference. Use your skills and time to help those in need while respecting their anonymity.
             </p>
-            <RoleButtons role="volunteer" signupPath="/signup/volunteer" loginPath="/login/volunteer" />
+            <RoleButtons role="volunteer" signupPath="/signup/volunteer" />
           </div>
         </div>
       </section>
