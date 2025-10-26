@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 export default function VolunteerSignup() {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     // Step 1
     name: '',
     email: '',
+    password: '',
     location: '',
     
     // Step 2
@@ -44,11 +48,37 @@ export default function VolunteerSignup() {
   const nextStep = () => setStep(prev => prev + 1);
   const prevStep = () => setStep(prev => prev - 1);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would send data to your backend/AI system
-    alert('Thank you for signing up! Your information has been submitted for matching.');
+
+    // Prepare profile text for AI embedding
+    const profileText = `
+      Interests: ${formData.interests.join(', ')}
+      Skills: ${formData.skills}
+      Motivation: ${formData.motivation}
+      Experience: ${formData.experience}
+      Availability: ${formData.hours} hours per week
+      Contact Method: ${formData.contactMethod}
+      Location: ${formData.location}
+    `.trim();
+
+    try {
+      const signupData = {
+        real_name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: 'volunteer',
+        profile_text: profileText
+      };
+
+      await signup(signupData);
+
+      alert('Signup successful! You can now log in.');
+      navigate('/login/volunteer');
+    } catch (error) {
+      console.error('Signup error:', error);
+      alert('Signup failed. Please try again.');
+    }
   };
 
   return (
@@ -108,6 +138,19 @@ export default function VolunteerSignup() {
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Enter your email"
+                />
+              </div>
+
+              <div>
+                <label className="block mb-2 font-medium text-gray-700">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  required
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Create a password"
                 />
               </div>
 

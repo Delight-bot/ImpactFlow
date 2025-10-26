@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+supabase
+openai
+python-dotenv
+pydantic

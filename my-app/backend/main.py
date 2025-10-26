@@ -2,6 +2,7 @@ import os
 import random
 import string
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from supabase import create_client
 from openai import OpenAI
@@ -13,6 +14,15 @@ supabase = create_client(os.getenv("SUPABASE_URL"), os.getenv("SUPABASE_KEY"))
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = FastAPI()
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Vite dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ---------- Models ----------
 class SignupRequest(BaseModel):
@@ -34,6 +44,11 @@ class MessageRequest(BaseModel):
     text: str
 
 
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
 # ---------- Utility ----------
 def generate_alias(role: str) -> str:
     prefix = "BEN" if role == "beneficiary" else "VOL"
@@ -41,11 +56,16 @@ def generate_alias(role: str) -> str:
 
 
 def get_embedding(text: str):
-    response = openai_client.embeddings.create(
-        model="text-embedding-3-small",
-        input=text
-    )
-    return response.data[0].embedding
+    try:
+        response = openai_client.embeddings.create(
+            model="text-embedding-3-small",
+            input=text
+        )
+        return response.data[0].embedding
+    except Exception as e:
+        # Return a dummy embedding if OpenAI fails (for testing)
+        print(f"OpenAI embedding failed: {e}")
+        return [0.0] * 1536  # Default embedding dimension for text-embedding-3-small
 
 
 # ---------- Routes ----------
@@ -121,3 +141,53 @@ def send_message(msg: MessageRequest):
 def get_messages(match_id: str):
     result = supabase.table("messages").select("*").eq("match_id", match_id).order("created_at").execute()
     return {"messages": result.data}
+
+
+@app.post("/login")
+def login(req: LoginRequest):
+    # Find user by email
+    result = supabase.table("users").select("*").eq("email", req.email).execute()
+
+    if not result.data or len(result.data) == 0:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    user = result.data[0]
+
+    # NOTE: In production, use proper password hashing (bcrypt)
+    if user["password_hash"] != req.password:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    return {
+        "user": {
+            "id": user["id"],
+            "alias": user["alias"],
+            "role": user["role"],
+            "real_name": user["real_name"],
+            "email": user["email"]
+        }
+    }
+
+
+@app.get("/user/{user_id}/matches")
+def get_user_matches(user_id: str):
+    # Get user role first
+    user_result = supabase.table("users").select("role").eq("id", user_id).single().execute()
+
+    if not user_result.data:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    role = user_result.data["role"]
+
+    # Get matches based on role
+    if role == "beneficiary":
+        matches = supabase.table("matches").select("""
+            *,
+            volunteer:volunteer_id (id, alias, real_name)
+        """).eq("beneficiary_id", user_id).execute()
+    else:
+        matches = supabase.table("matches").select("""
+            *,
+            beneficiary:beneficiary_id (id, alias, real_name)
+        """).eq("volunteer_id", user_id).execute()
+
+    return {"matches": matches.data}

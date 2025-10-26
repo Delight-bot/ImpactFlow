@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 export default function BeneficiarySignup() {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
+  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     // Step 1: Basic Information (Admin only)
     fullName: '',
     email: '',
+    password: '',
     phone: '',
     country: '',
     region: '',
@@ -52,39 +56,37 @@ export default function BeneficiarySignup() {
   const nextStep = () => setStep(prev => prev + 1);
   const prevStep = () => setStep(prev => prev - 1);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Prepare data for AI matching (this would go to your backend)
-    const aiMatchingData = {
-      // Limited info for AI matching (no personal identifiers)
-      needs: {
-        primary: formData.primaryNeed,
-        secondary: formData.secondaryNeeds,
-        urgency: formData.urgency,
-        timeline: formData.timeline
-      },
-      situation: formData.currentSituation,
-      challenges: formData.challenges,
-      goals: formData.goals,
-      preferences: {
-        contact: formData.contactPreference,
-        availability: formData.availability,
-        language: formData.language
-      }
-    };
 
-    // Full data for admin (includes personal info)
-    const adminData = {
-      ...formData,
-      timestamp: new Date().toISOString(),
-      status: 'pending'
-    };
+    // Prepare profile text for AI embedding
+    const profileText = `
+      Primary Need: ${formData.primaryNeed}
+      Secondary Needs: ${formData.secondaryNeeds.join(', ')}
+      Current Situation: ${formData.currentSituation}
+      Challenges: ${formData.challenges}
+      Goals: ${formData.goals}
+      Urgency: ${formData.urgency}
+      Timeline: ${formData.timeline}
+    `.trim();
 
-    console.log('AI Matching Data:', aiMatchingData);
-    console.log('Admin Data:', adminData);
-    
-    alert('Thank you for your application. Our team will review your needs and match you with a suitable volunteer. Your privacy is protected.');
+    try {
+      const signupData = {
+        real_name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        role: 'beneficiary',
+        profile_text: profileText
+      };
+
+      await signup(signupData);
+
+      alert('Signup successful! You can now log in.');
+      navigate('/login/beneficiary');
+    } catch (error) {
+      console.error('Signup error:', error);
+      alert('Signup failed. Please try again.');
+    }
   };
 
   return (
@@ -152,6 +154,19 @@ export default function BeneficiarySignup() {
                     value={formData.email}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2 font-medium text-gray-700">Password *</label>
+                  <input
+                    type="password"
+                    name="password"
+                    required
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Create a password"
                   />
                 </div>
               </div>

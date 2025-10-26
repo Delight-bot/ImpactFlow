@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
+import Footer from "./Footer";
 
 export default function Layout() {
   const toggleTheme = () => {
@@ -15,54 +16,69 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col bg-sitebg-light dark:bg-sitebg-dark transition-colors duration-300">
       {/* Navbar */}
-      <nav className="bg-gradient-to-r from-beneficiary-dark to-admin-dark text-white px-6 py-4 flex justify-between items-center shadow-lg sticky top-0 z-50">
-        <div className="flex items-center space-x-4">
-          <h1 className="text-2xl font-bold text-white">Volunteer Match</h1>
-          <span className="text-sm bg-beneficiary px-3 py-1 rounded-full">
-            Secure Matching Platform
-          </span>
-        </div>
-        <div className="space-x-3 flex items-center">
-          {/* Home */}
-          <Link
-            to="/"
-            className="px-4 py-2 rounded-lg hover:bg-white/10 transition-all duration-300 font-medium hover:shadow-lg hover:shadow-textbase-light/50 hover:scale-105"
-          >
-            Home
-          </Link>
+      <nav className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg text-gray-800 dark:text-white px-6 py-4 shadow-xl sticky top-0 z-50 border-b border-purple-200/20 dark:border-purple-800/20">
+        {/* Gradient underline effect */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 opacity-50"></div>
 
-          {/* Beneficiary Login */}
-          <Link
-            to="/login/beneficiary"
-            className="px-4 py-2 rounded-lg border border-beneficiary text-beneficiary hover:bg-beneficiary-light transition-all duration-300 font-medium shadow-md hover:shadow-lg hover:shadow-beneficiary/50 hover:scale-105"
-          >
-            Beneficiary Login
-          </Link>
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-2xl">🤝</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400">
+                  Volunteer Match
+                </h1>
+              </div>
+            </div>
+            <span className="hidden md:inline-block text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full shadow-md">
+              ✨ Secure Platform
+            </span>
+          </div>
 
-          {/* Volunteer Login */}
-          <Link
-            to="/login/volunteer"
-            className="px-4 py-2 rounded-lg border border-volunteer text-volunteer hover:bg-volunteer-light transition-all duration-300 font-medium shadow-md hover:shadow-lg hover:shadow-volunteer/50 hover:scale-105"
-          >
-            Volunteer Login
-          </Link>
+          <div className="flex items-center space-x-2">
+            {/* Home */}
+            <Link
+              to="/"
+              className="px-4 py-2 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-all duration-300 font-medium hover:scale-105 text-gray-700 dark:text-gray-200"
+            >
+              Home
+            </Link>
 
-          {/* Admin Login */}
-          <Link
-            to="/admin/login"
-            className="px-4 py-2 rounded-lg border border-admin text-admin hover:bg-admin-light transition-all duration-300 font-medium shadow-md hover:shadow-lg hover:shadow-admin/50 hover:scale-105 text-sm"
-          >
-            Admin Login
-          </Link>
+            {/* Beneficiary Login */}
+            <Link
+              to="/login/beneficiary"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-purple-500/50 hover:scale-105"
+            >
+              Beneficiary
+            </Link>
 
-          {/* Dark/Light mode toggle */}
-          <button
-            onClick={toggleTheme}
-            className="ml-4 px-3 py-2 rounded-lg bg-textbase-light dark:bg-textbase-dark text-white dark:text-black transition-colors hover:shadow-lg hover:shadow-textbase-light/50 hover:scale-105"
-            title="Toggle theme"
-          >
-            🌓
-          </button>
+            {/* Volunteer Login */}
+            <Link
+              to="/login/volunteer"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 transition-all duration-300 font-medium shadow-lg hover:shadow-green-500/50 hover:scale-105"
+            >
+              Volunteer
+            </Link>
+
+            {/* Admin Login */}
+            <Link
+              to="/admin/login"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-white hover:from-orange-600 hover:to-red-700 transition-all duration-300 font-medium shadow-lg hover:shadow-orange-500/50 hover:scale-105 text-sm"
+            >
+              Admin
+            </Link>
+
+            {/* Dark/Light mode toggle */}
+            <button
+              onClick={toggleTheme}
+              className="ml-2 w-10 h-10 rounded-xl bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 hover:from-gray-300 hover:to-gray-400 dark:hover:from-gray-600 dark:hover:to-gray-700 transition-all duration-300 hover:shadow-lg hover:scale-105 flex items-center justify-center"
+              title="Toggle theme"
+            >
+              <span className="text-xl">🌓</span>
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -70,6 +86,9 @@ export default function Layout() {
       <main className="flex-grow p-8 text-textbase-light dark:text-textbase-dark transition-colors duration-300">
         <Outlet />
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
