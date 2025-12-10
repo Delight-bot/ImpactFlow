@@ -1,5 +1,5 @@
 [build]
-base = "admin-dashboard"
-publish = "admin-dashboard/dist"
-command = "npm run build"
+base = "my-app"
+command = npm ci && npm run build
+publish = "my-app/dist"
 
