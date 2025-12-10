@@ -1,6 +1,5 @@
 [build]
-  command = "npm run build"
-  publish = "build"  # change this if your build output is 'build' or 'public'
+base = "admin-dashboard"
+publish = "admin-dashboard/dist"
+command = "npm run build"
 
-[build.environment]
-  NODE_VERSION = "18"
