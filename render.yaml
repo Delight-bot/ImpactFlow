@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: impactflow-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    # Seeding is idempotent (app/seed.py no-ops once the admin user exists),
+    # so running it on every boot guarantees a working demo login even if
+    # the free-tier disk resets between deploys.
+    startCommand: python -m app.seed && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.7
