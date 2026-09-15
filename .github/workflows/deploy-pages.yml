@@ -53,9 +53,10 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    # First deploy after enabling Pages can race GitHub's environment
-    # provisioning -- this job re-triggers that attempt now that it's had
-    # time to settle.
+    # The github-pages environment has its own deployment-branch allowlist,
+    # separate from the repo's Pages source setting -- Settings >
+    # Environments > github-pages > Deployment branches and tags must
+    # include `main` or this job 403s even though `build` succeeds.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
