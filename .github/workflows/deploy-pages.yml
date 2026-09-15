@@ -53,6 +53,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # First deploy after enabling Pages can race GitHub's environment
+    # provisioning -- this job re-triggers that attempt now that it's had
+    # time to settle.
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
